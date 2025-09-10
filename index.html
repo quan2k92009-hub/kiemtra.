@@ -127,8 +127,9 @@ for (let i = 0; i < questions.length; i++) {
 }
 shuffle(quizData); // trộn câu hỏi
 
-// ===== HIỂN THỊ CÂU HỎI =====
+// ===== ĐIỂM =====
 let currentQuestion = 0;
+let score = 0;
 
 function showQuestion(index){
   const qContainer = document.getElementById('question-container');
@@ -166,12 +167,15 @@ function checkAnswer(isCorrect, button){
   if (isCorrect){
     button.classList.add('correct');
     msg.textContent = "✅ Đúng rồi!";
+    score++; // tăng điểm
     setTimeout(()=>{
       currentQuestion++;
       if (currentQuestion < quizData.length){
         showQuestion(currentQuestion);
       } else {
-        document.getElementById('quiz').innerHTML = "<h2>Bạn đã hoàn thành bài kiểm tra!</h2>";
+        // Hiển thị điểm khi xong
+        document.getElementById('quiz').innerHTML = `<h2>Bạn đã hoàn thành bài kiểm tra!</h2>
+        <h3>Điểm của bạn: ${score} / 30</h3>`;
       }
     }, 1000);
   } else {

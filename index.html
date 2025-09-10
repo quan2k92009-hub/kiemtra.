@@ -33,7 +33,7 @@
 </div>
 
 <script>
-// Danh sách câu hỏi
+// ===== 30 CÂU HỎI =====
 const questions = [
 "Câu 1: Đầu thế kỉ XVIII, ngành công nghiệp phát triển nhất ở nước Anh là?",
 "Câu 2: Đẳng cấp thứ ba trong xã hội Pháp trước cách mạng bao gồm:",
@@ -67,7 +67,7 @@ const questions = [
 "Câu 30: Người lãnh đạo tiêu biểu trong cuộc Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mĩ là:"
 ];
 
-// Danh sách đáp án A/B/C/D cho từng câu
+// ===== ĐÁP ÁN (4 đáp án mỗi câu) =====
 const options = [
 ["A. Dệt len","B. Máy hơi nước","C. Luyện kim, chế tạo máy","D. Đóng tàu"],
 ["A. Tư sản, nông dân, bình dân thành thị","B. Quý tộc, tăng lữ, tư sản","C. Tăng lữ, quý tộc, tư sản","D. Vua, quan lại, tăng lữ, bình dân thành thị"],
@@ -101,13 +101,33 @@ const options = [
 ["A. Ô. Crôm-oen","B. G. Oa-sinh-tơn","C. M. Rô-be-spie","D. V.I. Lê-nin"]
 ];
 
-// Đáp án đúng
+// ===== ĐÁP ÁN ĐÚNG =====
 const correctAnswers = [
  'A','A','B','B','C','B','A','D','B','D',
  'D','A','B','A','C','B','B','C','A','A',
  'A','A','B','C','C','B','D','C','A','B'
 ];
 
+// ===== HÀM TRỘN =====
+function shuffle(array){
+  for (let i = array.length - 1; i > 0; i--){
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// ===== GHÉP DỮ LIỆU CÂU HỎI =====
+let quizData = [];
+for (let i = 0; i < questions.length; i++) {
+  quizData.push({
+    question: questions[i],
+    options: options[i].slice(),
+    correct: correctAnswers[i]
+  });
+}
+shuffle(quizData); // trộn câu hỏi
+
+// ===== HIỂN THỊ CÂU HỎI =====
 let currentQuestion = 0;
 
 function showQuestion(index){
@@ -115,25 +135,40 @@ function showQuestion(index){
   const aContainer = document.getElementById('answers-container');
   const msg = document.getElementById('message');
   msg.textContent = '';
-  qContainer.innerHTML = `<div class="question">${questions[index]}</div>`;
+
+  const q = quizData[index];
+
+  // Trộn đáp án nhưng phải nhớ đáp án đúng
+  let answersWithFlag = q.options.map((opt,i)=>{
+    let letter = String.fromCharCode(65+i);
+    return {
+      text: opt,
+      isCorrect: (letter===q.correct)
+    };
+  });
+  shuffle(answersWithFlag);
+
+  qContainer.innerHTML = `<div class="question">${q.question}</div>`;
   aContainer.innerHTML = '';
-  for (let i=0; i<4; i++){
+
+  answersWithFlag.forEach(item=>{
     const btn = document.createElement('button');
-    btn.textContent = options[index][i];
-    btn.addEventListener('click', ()=>checkAnswer(String.fromCharCode(65+i), btn));
+    btn.textContent = item.text;
+    btn.addEventListener('click', ()=>{
+      checkAnswer(item.isCorrect, btn);
+    });
     aContainer.appendChild(btn);
-  }
+  });
 }
 
-function checkAnswer(answer, button){
-  const correct = correctAnswers[currentQuestion];
+function checkAnswer(isCorrect, button){
   const msg = document.getElementById('message');
-  if (answer === correct){
+  if (isCorrect){
     button.classList.add('correct');
-    msg.textContent = "✅ Xin chúc mừng, bạn đã chọn đúng!";
+    msg.textContent = "✅ Đúng rồi!";
     setTimeout(()=>{
       currentQuestion++;
-      if (currentQuestion < questions.length){
+      if (currentQuestion < quizData.length){
         showQuestion(currentQuestion);
       } else {
         document.getElementById('quiz').innerHTML = "<h2>Bạn đã hoàn thành bài kiểm tra!</h2>";
@@ -141,11 +176,13 @@ function checkAnswer(answer, button){
     }, 1000);
   } else {
     button.classList.add('wrong');
-    msg.textContent = "❌ Xin chia buồn, bạn đã chọn sai. Xin vui lòng chọn lại!";
+    msg.textContent = "❌ Sai rồi, chọn lại!";
   }
 }
 
+// ===== KHỞI TẠO =====
 showQuestion(currentQuestion);
+
 </script>
 
 </body>

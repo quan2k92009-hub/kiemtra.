@@ -1,208 +1,143 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài kiểm tra trắc nghiệm Lịch Sử</title>
-<style>
-  body {font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px;}
-  .question {font-size: 18px; font-weight: bold; margin-bottom: 10px;}
-  .answers button {
-    display: block; 
-    width: 100%; 
-    margin: 5px 0; 
-    padding: 10px; 
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background: #eee;
-  }
-  .correct {background-color: #4CAF50 !important; color: white;}
-  .wrong {background-color: #f44336 !important; color: white;}
-  .message {margin-top: 15px; font-size: 16px; font-weight: bold;}
-</style>
+  <meta charset="UTF-8">
+  <title>Bài kiểm tra 30 câu trắc nghiệm</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .option {
+      display: block;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .option:hover {
+      background: #f2f2f2;
+    }
+    .correct {
+      background: #c8f7c5 !important;
+      border-color: #27ae60;
+      color: #145a32;
+    }
+    .wrong {
+      background: #f7c5c5 !important;
+      border-color: #c0392b;
+      color: #641e16;
+    }
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
+  <h2>Bài kiểm tra 30 câu trắc nghiệm</h2>
+  <div id="quiz"></div>
+  <p id="score"></p>
 
-<h1>Bài kiểm tra trắc nghiệm Lịch Sử</h1>
-<div id="quiz">
-  <div id="question-container"></div>
-  <div class="answers" id="answers-container"></div>
-  <div class="message" id="message"></div>
-</div>
+  <script>
+    const questions = [
+      {q: "Đầu thế kỉ XIX, các nước Mĩ Latinh giành độc lập từ tay thực dân", opts: ["Tây Ban Nha và Bồ Đào Nha","Anh và đế quốc Mĩ","Tây Ban Nha và Pháp","Pháp và Đức"], ans: "A"},
+      {q: "Chủ nghĩa tư bản hiện đại là thuật ngữ dùng để chỉ chủ nghĩa tư bản", opts: ["Trong giai đoạn tự do cạnh tranh","Bắt đầu chuyển sang giai đoạn độc quyền","Từ sau Chiến tranh thế giới thứ hai đến nay","Từ sau Chiến tranh thế giới thứ nhất đến nay"], ans: "C"},
+      {q: "Một trong những thách thức mà chủ nghĩa tư bản hiện đại phải đối mặt là", opts: ["Tiềm ẩn nguy cơ khủng hoảng tài chính mang tính toàn cầu","Sản xuất các công cụ hiện đại ngày càng tốn kém","Khoa học công nghệ phát triển và ngày càng mở rộng","Lực lượng lao động có chất lượng ngày càng cao"], ans: "A"},
+      {q: "Chủ nghĩa tư bản được xác lập đầu tiên trên thế giới ở", opts: ["Châu Âu và Bắc Mĩ","Tây Âu và Châu Á","Bắc Mĩ và Nam Á","Châu Á và Châu Phi"], ans: "C"},
+      {q: "Sự kiện đánh dấu sự mở rộng của cuộc cách mạng tư sản bên ngoài châu Âu", opts: ["Cách mạng tư sản Anh","Cách mạng tư sản Pháp","Cách mạng tư sản Hà Lan","Chiến tranh giành độc lập ở Bắc Mĩ"], ans: "D"},
+      {q: "Một trong những đặc điểm cơ bản của chủ nghĩa tư bản hiện đại là", opts: ["Bước đầu xuất khẩu tư bản","Xuất hiện độc quyền nhà nước","Xuất khẩu hàng hóa","Hình thành các công ty độc quyền"], ans: "B"},
+      {q: "Sự xác lập của chủ nghĩa tư bản ở châu Âu và Bắc Mĩ thế kỉ XVII – XIX có điểm chung là", opts: ["Thiết lập chế độ quân chủ lập hiến","Thiết lập chế độ cộng hòa","Áp đặt chế độ chuyên chế","Do giai cấp tư sản lãnh đạo"], ans: "D"},
+      {q: "Các nước tư bản hiện đại tiêu biểu là", opts: ["Anh, Pháp, Trung Quốc","Mĩ, Nhật, Cuba","Mĩ, Nhật, Đức","Mĩ, Trung Quốc"], ans: "C"},
+      {q: "Sự khác biệt giữa chủ nghĩa tư bản tự do cạnh tranh và chủ nghĩa tư bản độc quyền xuất phát từ", opts: ["Sự phát triển kinh tế và công nghiệp","Sự cạnh tranh và chiến lược kinh doanh","Sự bất ổn định, phân hóa giàu nghèo","Sự tập trung tài sản và quyền lực"], ans: "D"},
+      {q: "Từ đầu thế kỉ XIX, để đáp ứng nhu cầu ngày càng cao về nguyên liệu và nhân công, các nước tư bản phương Tây đã tăng cường", opts: ["Mở rộng thị trường","Thu hút vốn đầu tư bên ngoài","Xâm lược và mở rộng thuộc địa","Đổi mới hình thức kinh doanh"], ans: "C"},
+      {q: "Cuối thế kỉ XIX – đầu thế kỉ XX, các nước tư bản chủ nghĩa đã chuyển sang giai đoạn", opts: ["Tự do cạnh tranh","Cải cách đất nước","Độc quyền","Chủ nghĩa phát xít"], ans: "C"},
+      {q: "Chủ nghĩa đế quốc ra đời từ cuối thế kỉ XIX đầu thế kỉ XX là kết quả trực tiếp của", opts: ["Xâm lược thuộc địa","Giao lưu buôn bán","Xuất khẩu hàng hóa","Xuất khẩu tư bản"], ans: "A"},
+      {q: "Đến cuối thế kỉ XIX, các nước đế quốc chủ nghĩa đã thiết lập hệ thống thuộc địa rộng khắp ở", opts: ["Châu Âu, châu Mĩ và khu vực Tây Âu","Châu Âu, châu Úc và khu vực Bắc Âu","Châu Á, châu Phi và khu vực Mĩ Latinh","Châu Mĩ, Tây Âu và khu vực Đông Âu"], ans: "C"},
+      {q: "Đầu thế kỉ XX, quốc gia nào sau đây có hệ thống thuộc địa rộng lớn nhất?", opts: ["Đức","I-ta-li-a","Nhật","Anh"], ans: "D"},
+      {q: "Các tổ chức độc quyền ra đời ở các nước tư bản (từ cuối thế kỉ XIX đầu thế kỉ XX) là kết quả của sự liên minh giữa", opts: ["Vô sản và tư sản","Chủ nô và tư sản","Các nhà tư bản lớn","Địa chủ và quý tộc"], ans: "C"},
+      {q: "Sự kiện nào sau đây đánh dấu sự mở rộng của chủ nghĩa tư bản ra ngoài châu Âu?", opts: ["Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mĩ","Phong trào đấu tranh giành độc lập ở khu vực Mĩ Latinh","Cuộc vận động thống nhất nước Đức và I-ta-li-a","Cải cách nông nô ở Nga và cuộc nội chiến ở Mĩ"], ans: "A"},
+      {q: "Nội dung nào sau đây là một trong những thách thức của chủ nghĩa tư bản hiện đại?", opts: ["Nguồn nhân công ngày càng cạn kiệt","Giao lưu kinh tế quốc tế ngày càng hạn chế","Mâu thuẫn xã hội ngày càng gia tăng","Sự ra đời các tổ chức liên kết khu vực"], ans: "C"},
+      {q: "Chính sách xâm lược và mở rộng thuộc địa của các nước tư bản cuối thế kỉ XIX nhằm đáp ứng nhu cầu", opts: ["Phát triển khoa học – kĩ thuật","Giải quyết tình trạng thất nghiệp","Hạn chế nguồn vốn đầu tư bên ngoài","Nguyên liệu và nguồn nhân công"], ans: "D"},
+      {q: "Nước Anh được mệnh danh là “đế quốc mà Mặt Trời không bao giờ lặn” vì", opts: ["Nước Anh luôn phải đối mặt với nạn ngoại xâm","Nước Anh có hệ thống thuộc địa rộng khắp thế giới","Nguồn vốn của nước Anh được rải khắp toàn cầu","Các nước đế quốc thường hợp tác với nước Anh"], ans: "B"},
+      {q: "Chủ nghĩa tư bản hiện đại ra đời là kết quả của quá trình xâm lược thuộc địa nhằm", opts: ["Bổ sung thị trường, tài nguyên và nhân lực từ các nước ngoài","Giữ gìn trật tự, ổn định xã hội","Tìm kiếm cơ hội phát triển sản xuất hàng hóa","Đẩy nhanh công nghiệp hóa và hiện đại hóa"], ans: "A"},
+      {q: "Một trong những nguyên nhân chủ yếu dẫn đến sự phát triển của nền kinh tế tư bản hiện đại là", opts: ["Việc xuất khẩu tư bản đã trở nên phổ biến","Quá trình toàn cầu hóa và sự hình thành các khối kinh tế","Lực lượng lao động dồi dào, chất lượng cao","Sức sản xuất phát triển cao trên cơ sở thành tựu của cách mạng khoa học – công nghệ"], ans: "A"},
+      {q: "Nội dung nào sau đây phản ánh đúng đặc trưng của chủ nghĩa tư bản hiện đại?", opts: ["Chủ nghĩa tư bản không ngừng điều chỉnh và thích ứng để phát triển","Sự dung hợp tư bản ngân hàng với tư bản công nghiệp thành tư bản tài chính","Sự hình thành các tổ chức độc quyền về sản xuất, lưu thông và dịch vụ","Các cường quốc tư bản tiến hành cải cách để ổn định chính trị, xã hội"], ans: "A"},
+      {q: "Trong những năm 50 – 70 của thế kỉ XIX, các cuộc cách mạng tư sản tiếp tục diễn ra dưới nhiều hình thức ở châu Âu và Bắc Mĩ, tiêu biểu là", opts: ["Cách mạng tư sản Anh","Cách mạng tư sản Pháp","Chiến tranh giành độc lập ở Bắc Mĩ","Cải cách nông nô ở Nga"], ans: "D"},
+      {q: "Cuối thế kỉ XIX, hầu hết các quốc gia ở châu Á đều trở thành thuộc địa của phương Tây, ngoại trừ", opts: ["Xiêm và Nhật Bản","Nhật Bản và Trung Quốc","Trung Quốc và Xiêm","Ấn Độ và Xiêm"], ans: "A"},
+      {q: "Đầu thế kỉ XIX, các nước Mĩ Latinh giành độc lập từ tay thực dân", opts: ["Tây Ban Nha và Bồ Đào Nha","Anh và đế quốc Mĩ","Tây Ban Nha và Pháp","Pháp và Đức"], ans: "A"},
+      {q: "Cuối thế kỉ XIX đầu thế kỉ XX, quốc gia nào sau đây được mệnh danh là “công xưởng của thế giới” và “đế quốc mà Mặt Trời không bao giờ lặn”?", opts: ["Pháp","Anh","Đức","Mĩ"], ans: "B"},
+      {q: "Cuối thế kỉ XIX, sự tập trung sản xuất và tích tụ cao độ đã đưa chủ nghĩa tư bản chuyển sang giai đoạn", opts: ["Độc quyền","Tự do cạnh tranh","Hòa hoãn","Hợp tác"], ans: "A"},
+      {q: "Cuối thế kỉ XIX, quốc gia nào sau đây đã ban hành tuyên bố không can thiệp vào khu vực Mĩ Latinh?", opts: ["Tây Ban Nha","Bồ Đào Nha","Anh","Mĩ"], ans: "D"},
+      {q: "Một trong những đặc điểm nổi bật của chủ nghĩa tư bản độc quyền cuối thế kỉ XIX đầu thế kỉ XX là", opts: ["Xây dựng chế độ xã hội chủ nghĩa","Tổ chức độc quyền","Tổ chức liên kết khu vực","Tổ chức liên kết quốc tế"], ans: "B"},
+      {q: "Lĩnh vực nào sau đây là tiềm năng phát triển của chủ nghĩa tư bản hiện đại?", opts: ["Chính trị và xã hội","Sự bình đẳng xã hội","Cải cách giáo dục","Khoa học – công nghệ"], ans: "D"}
+    ];
 
-<script>
-// ===== DỮ LIỆU =====
-const questions = [
-"Câu 1: Đầu thế kỉ XVIII, ngành công nghiệp phát triển nhất ở nước Anh là?",
-"Câu 2: Đẳng cấp thứ ba trong xã hội Pháp trước cách mạng bao gồm:",
-"Câu 3: Đến giữa thế kỉ XVIII, miền Bắc của 13 bang thuộc địa Anh ở Bắc Mĩ phổ biến:",
-"Câu 4: Đến giữa thế kỉ XVIII, miền Nam của 13 bang thuộc địa Anh ở Bắc Mĩ phổ biến:",
-"Câu 5: Đặc điểm nổi bật của nền nông nghiệp Anh thế kỉ XVII:",
-"Câu 6: Sự khác biệt căn bản để nền sản xuất nông nghiệp tư bản chủ nghĩa phát triển ở Anh:",
-"Câu 7: Nội dung nào sau đây phản ánh đúng tình hình kinh tế của các nước châu Âu thời cận đại?",
-"Câu 8: Nội dung nào sau đây là tiền đề về kinh tế dẫn đến sự bùng nổ và thắng lợi của các cuộc cách mạng tư sản?",
-"Câu 9: Kinh tế tư bản chủ nghĩa ra đời và phát triển trong chế độ xã hội nào?",
-"Câu 10: Cuộc đấu tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mĩ nổ ra cuối thế kỉ XVIII đưa nền kinh tế thuộc địa tiến triển như thế nào?",
-"Câu 11: Nội dung nào sau đây không phản ánh tình hình kinh tế nước Pháp cuối thế kỉ XVIII?",
-"Câu 12: Đặc điểm nổi bật của tình hình chính trị nước Anh và Pháp trước cách mạng tư sản?",
-"Câu 13: Nội dung nào sau đây không phải là đặc điểm tình hình nước Pháp cuối thế kỉ XVIII?",
-"Câu 14: Điểm khác biệt về hình thức chính trị Bắc Mĩ so với nước Anh và Pháp trước cách mạng tư sản?",
-"Câu 15: Đặc điểm nổi bật về kinh tế 13 thuộc địa Anh ở Bắc Mĩ giữa thế kỉ XVIII là:",
-"Câu 16: Tiền đề chính trị của cuộc Cách mạng tư sản Anh (thế kỉ XVII) là gì?",
-"Câu 17: Về đời sống xã hội của cách mạng tư sản Pháp (cuối thế kỉ XVIII): mâu thuẫn giữa:",
-"Câu 18: Lực lượng nào sau đây thuộc Đẳng cấp thứ ba ở nước Pháp (cuối thế kỉ XVIII)?",
-"Câu 19: Vào thời kì XVI đến đầu thế kỉ XX, giai cấp nào giữ vai trò chủ yếu trong nền kinh tế nhưng không có quyền lực chính trị tương xứng trong xã hội?",
-"Câu 20: Mục tiêu chung của các cuộc cách mạng tư sản thế kỉ XVI–XVIII là:",
-"Câu 21: Các cuộc cách mạng tư sản thế kỉ XVI–XVIII có hai nhiệm vụ cơ bản là:",
-"Câu 22: Những lực lượng lãnh đạo chủ yếu của các cuộc cách mạng tư sản thế kỉ XVI–XVIII là:",
-"Câu 23: Lãnh đạo của cuộc Cách mạng tư sản Anh thế kỉ XVII là:",
-"Câu 24: “Lật đổ chế độ phong kiến đứng đầu vua Sác-lơ I…” là mục tiêu của cuộc cách mạng tư sản ở quốc gia nào?",
-"Câu 25: Nội dung nào sau đây không phản ánh đúng nhiệm vụ dân tộc của các cuộc cách mạng tư sản thời cận đại?",
-"Câu 26: Một trong những nhiệm vụ dân chủ của các cuộc cách mạng tư sản thời cận đại là:",
-"Câu 27: Nội dung nào sau đây không phải là mục tiêu của các cuộc cách mạng tư sản thế kỉ XVI–XVIII?",
-"Câu 28: Nội dung nào sau đây là mục tiêu của Cách mạng tư sản Pháp cuối thế kỉ XVIII?",
-"Câu 29: Một trong những điểm chung của các cuộc cách mạng tư sản thời cận đại là:",
-"Câu 30: Người lãnh đạo tiêu biểu trong cuộc Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mĩ là:"
-];
-
-const options = [
-["A. Dệt len","B. Máy hơi nước","C. Luyện kim, chế tạo máy","D. Đóng tàu"],
-["A. Tư sản, nông dân, bình dân thành thị","B. Quý tộc, tăng lữ, tư sản","C. Tăng lữ, quý tộc, tư sản","D. Vua, quan lại, tăng lữ, bình dân thành thị"],
-["A. Kinh tế đồn điền","B. Công trường thủ công","C. Cấy lúa, làm gốm","D. Phường hội thủ công"],
-["A. Công thương nghiệp","B. Đồn điền, trang trại","C. Luyện kim và đóng tàu","D. Khai thác đá quý"],
-["A. Lạc hậu, manh mún","B. Bị cạnh tranh gay gắt","C. Phát triển theo hướng sản xuất hàng hóa","D. Phát triển mạnh mẽ trong lĩnh vực nhập khẩu"],
-["A. Tiếp tục dựa trên chế độ phong kiến","B. Chuyển sang nền kinh tế tư bản chủ nghĩa","C. Tiếp tục dựa trên chế độ chiếm hữu nô lệ","D. Kìm hãm và xóa bỏ man mống sản xuất tư bản"],
-["A. Chế độ phong kiến chuyên chế kìm hãm kinh tế TBCN","B. Chế độ phong kiến thúc đẩy kinh tế TBCN","C. Sự cai trị của chính quốc thúc đẩy kinh tế TBCN","D. Kinh tế TBCN ra đời đồng thời chế độ phong kiến chuyên chế"],
-["A. Quan hệ sản xuất tư bản chủ nghĩa thay thế phong kiến","B. Triết học Ánh sáng ra đời","C. Giai cấp tư sản có thế lực rất lớn","D. Kinh tế tư bản chủ nghĩa ra đời và phát triển trong lòng phong kiến"],
-["A. Xã hội cộng sản nguyên thủy","B. Xã phong kiến hoặc thuộc địa","C. Xã hội tư bản chủ nghĩa","D. Xã hội xã hội chủ nghĩa"],
-["A. Kinh tế TBCN ở Bắc Mĩ bị kìm hãm","B. Chế độ phong kiến cản trở","C. Phong trào rào đất cướp ruộng","D. Tồn tại chế độ nô lệ kìm hãm kinh tế TBCN"],
-["A. Công thương nghiệp phát triển","B. Nền kinh tế TBCN bị kìm hãm","C. Nông nghiệp chiếm tỉ lệ cao","D. Phong trào rào đất cướp ruộng diễn ra mạnh"],
-["A. Tồn tại chế độ quân chủ chuyên chế","B. Là thuộc địa","C. Xuất hiện tầng lớp quý tộc mới","D. Xã hội phân chia đẳng cấp"],
-["A. Lấy Thanh giáo làm ngọn cờ","B. Xuất hiện trào lưu Triết học Ánh sáng","C. Xã hội phân chia thành đẳng cấp","D. Vua Lu-i XVI có quyền lực tuyệt đối"],
-["A. Thực dân phương Tây thống trị","B. Chế độ phong kiến kìm hãm","C. Xuất hiện tầng lớp quý tộc mới","D. Xã hội tồn tại chế độ đẳng cấp"],
-["A. Miền Nam phát triển công nghiệp","B. Miền Bắc phát triển thương nghiệp","C. Kinh tế phát triển theo con đường TBCN","D. Phương thức sản xuất TBCN chưa thâm nhập"],
-["A. Nhà nước phong kiến tiến hành chính sách tiến bộ","B. Sự tồn tại của nhà nước phong kiến chuyên chế gây bất mãn","C. Vua Sác-lơ I công khai ủng hộ Thanh giáo","D. Chính sách nhà nước quân chủ lập hiến xâm phạm quyền lợi tư sản"],
-["A. Quần chúng nhân dân với nhà nước quân chủ","B. Giai cấp tư sản và Tăng lữ, Quý tộc","C. Đẳng cấp tăng lữ với chế độ quân chủ","D. Tư sản và địa chủ"],
-["A. Giai cấp tư sản","B. Tăng lữ Giáo hội","C. Quý tộc phong kiến","D. Bình dân thành thị"],
-["A. Giai cấp tư sản và nông dân","B. Giai cấp công nhân, thợ thủ công","C. Giai cấp nông dân, tầng lớp nghèo","D. Quý tộc phong kiến, địa chủ"],
-["A. Lật đổ chế độ phong kiến","B. Tạo điều kiện cho phát triển kinh tế TBCN","C. Thiết lập nền thống trị của giai cấp tư sản","D. Mở ra thời đại thắng lợi XHCN"],
-["A. Dân tộc và dân chủ","B. Đấu tranh vũ trang","C. Lật đổ vua chúa","D. Dân chủ và dân quyền"],
-["A. Tư sản","B. Công nhân","C. Nông dân","D. Địa chủ"],
-["A. Tư sản và chủ nô","B. Tư sản và quý tộc mới","C. Tăng lữ và quý tộc","D. Chủ nô và quý tộc mới"],
-["A. Nga","B. Pháp","C. Anh","D. Bắc Mĩ"],
-["A. Xóa bỏ phong kiến cát cứ","B. Thống nhất thị trường dân tộc","C. Xóa bỏ tính chất chuyên chế phong kiến","D. Hình thành quốc gia dân tộc"],
-["A. Giải phóng dân tộc","B. Xác lập nền dân chủ tư sản","C. Thống nhất thị trường dân tộc","D. Xóa bỏ phong kiến cát cứ"],
-["A. Lật đổ phong kiến","B. Tạo điều kiện cho phát triển kinh tế TBCN","C. Thiết lập nền thống trị của giai cấp tư sản","D. Mở ra thời đại thắng lợi XHCN"],
-["A. Lật đổ phong kiến Sác-lơ I","B. Lật đổ thống trị thực dân Anh","C. Lật đổ phong kiến vua Lu-i XVI","D. Thiết lập chính quyền tư sản"],
-["A. Mở đường cho TBCN","B. Do tư sản và chủ nô lãnh đạo","C. Xóa bỏ chế độ phong kiến nô lệ","D. Diễn ra dưới hình thức nội chiến"],
-["A. Ô. Crôm-oen","B. G. Oa-sinh-tơn","C. M. Rô-be-spie","D. V.I. Lê-nin"]
-];
-
-const correctAnswers = [
- 'A','A','B','B','C','B','A','D','B','D',
- 'D','A','B','A','C','B','B','C','A','A',
- 'A','A','B','C','C','B','D','C','A','B'
-];
-
-// ===== HÀM TRỘN =====
-function shuffle(array){
-  for (let i = array.length - 1; i > 0; i--){
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-// ===== GHÉP DỮ LIỆU =====
-let quizData = [];
-for (let i = 0; i < questions.length; i++) {
-  quizData.push({
-    question: questions[i],
-    options: options[i].slice(),
-    correct: correctAnswers[i],
-    scored: null // để đánh dấu đúng/sai lần đầu
-  });
-}
-shuffle(quizData); // trộn câu hỏi
-
-let currentQuestion = 0;
-let score = 0;
-
-function showQuestion(index){
-  const qContainer = document.getElementById('question-container');
-  const aContainer = document.getElementById('answers-container');
-  const msg = document.getElementById('message');
-  msg.textContent = '';
-
-  const q = quizData[index];
-
-  // Trộn đáp án kèm cờ đúng
-  let answersWithFlag = q.options.map((opt,i)=>{
-    let letter = String.fromCharCode(65+i);
-    return {
-      text: opt,
-      isCorrect: (letter===q.correct)
-    };
-  });
-  shuffle(answersWithFlag);
-
-  qContainer.innerHTML = `<div class="question">${q.question}</div>`;
-  aContainer.innerHTML = '';
-
-  answersWithFlag.forEach(item=>{
-    const btn = document.createElement('button');
-    btn.textContent = item.text;
-    btn.addEventListener('click', ()=>{
-      checkAnswer(item.isCorrect, btn);
-    });
-    aContainer.appendChild(btn);
-  });
-}
-
-function checkAnswer(isCorrect, button){
-  const msg = document.getElementById('message');
-  const currentQ = quizData[currentQuestion];
-
-  // Nếu câu này chưa chấm điểm lần nào:
-  if (currentQ.scored === null){
-    if (isCorrect){
-      currentQ.scored = true; // ghi nhận đúng
-      score++;
-      button.classList.add('correct');
-      msg.textContent = "✅ Đúng lần đầu – bạn được 1 điểm!";
-      setTimeout(nextQuestion, 1000);
-    } else {
-      currentQ.scored = false; // ghi nhận sai
-      button.classList.add('wrong');
-      msg.textContent = "❌ Sai lần đầu – câu này 0 điểm, chọn lại để qua câu mới!";
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
     }
-  } else {
-    // đã chọn sai lần đầu → không cộng điểm nữa, nhưng phải chọn đúng mới qua
-    if (isCorrect){
-      button.classList.add('correct');
-      msg.textContent = "✅ Đúng rồi – nhưng không cộng điểm vì sai lần đầu!";
-      setTimeout(nextQuestion, 1000);
-    } else {
-      button.classList.add('wrong');
-      msg.textContent = "❌ Sai tiếp – chọn lại!";
+
+    let current = 0;
+    let score = 0;
+    let answered = 0;
+    const quizDiv = document.getElementById("quiz");
+    const scoreDiv = document.getElementById("score");
+
+    const shuffledQuestions = shuffle([...questions]);
+
+    function showQuestion() {
+      if (current >= shuffledQuestions.length) {
+        let finalScore = (score / questions.length * 10).toFixed(2);
+        quizDiv.innerHTML = "<h3>Bạn đã hoàn thành bài kiểm tra!</h3>";
+        scoreDiv.textContent = "Điểm số: " + finalScore + " / 10";
+        return;
+      }
+
+      let q = shuffledQuestions[current];
+      let answers = [
+        {key:"A", text:q.opts[0]},
+        {key:"B", text:q.opts[1]},
+        {key:"C", text:q.opts[2]},
+        {key:"D", text:q.opts[3]},
+      ];
+      shuffle(answers);
+
+      let html = `<div class="question">Câu ${current+1}. ${q.q}</div>`;
+      answers.forEach(opt => {
+        html += `<div class="option" data-key="${opt.key}">${opt.key}. ${opt.text}</div>`;
+      });
+      quizDiv.innerHTML = html;
+
+      document.querySelectorAll(".option").forEach(opt => {
+        opt.addEventListener("click", function() {
+          let chosen = this.getAttribute("data-key");
+          if (chosen === q.ans) {
+            this.classList.add("correct");
+            score++;
+            current++;
+            setTimeout(showQuestion, 800);
+          } else {
+            this.classList.add("wrong");
+          }
+        });
+      });
     }
-  }
-}
 
-function nextQuestion(){
-  currentQuestion++;
-  if (currentQuestion < quizData.length){
-    showQuestion(currentQuestion);
-  } else {
-    document.getElementById('quiz').innerHTML = `<h2>Bạn đã hoàn thành bài kiểm tra!</h2>
-    <h3>Điểm của bạn: ${score} / 30</h3>`;
-  }
-}
-
-// ===== KHỞI TẠO =====
-showQuestion(currentQuestion);
-</script>
-
+    showQuestion();
+  </script>
 </body>
 </html>
+  
